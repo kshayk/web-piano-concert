@@ -4,6 +4,11 @@ const MIDITYPESUSTAIN = 'sus';
 
 var roomId = window.location.pathname.split('/')[2];
 
+$('.modal').modal({
+    backdrop: 'static',
+    keyboard: false
+});
+
 $(".modal").modal('show');
 
 var hearPiano = false;
@@ -55,4 +60,10 @@ socket.on('midiKeyPressed', (data) => {
             console.log('Unrecognized event type, should not reach here');
 
     }
+});
+
+socket.on('composerLeft', () => {
+    alert('Composer left the room, so it will now be closed.');
+
+    window.location.href = '/';
 });

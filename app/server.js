@@ -7,7 +7,7 @@ const md5 = require('md5');
 const {Room} = require('./lib/room');
 
 var roomIds = [];
-var composerSocketIds = [];
+var composerSocketIds = {};
 var rooms = {};
 
 const publicPath = path.join(__dirname, '../public');
@@ -28,6 +28,7 @@ app.post('/create-room', (req, res) => {
     let time = new Date().getTime();
     let hash = md5(time);
 
+    //save room id temporarily to validate existing in first room join with socket
     roomIds.push(hash);
 
     res.send(hash);
@@ -38,24 +39,28 @@ app.get('/room/:roomid', (req, res) => {
         return el === req.params.roomid;
     });
 
-    if(typeof roomExists === 'undefined' && ! rooms[req.param.roomid]) {
-        return res.status(404).send();
+    if(typeof io.sockets.adapter.rooms[req.params.roomid] !== 'undefined' || typeof roomExists !== 'undefined') {
+        res.render('room');
     }
 
-    res.render('room');
+    return res.status(404).send();
 });
 
-io.on('connection', async (socket) => {
+io.on('connection', (socket) => {
     socket.on('join', (params, callback) => {
         var isComposer = false;
 
         socket.join(params.roomId);
 
+        //after room joined with roomId, can delete the room id from the roomIds array
+        roomIds = roomIds.filter(id => id === params.roomId);
+
         //find if room exists, if not this is a composer. set socket id as composer. if it does its a listener
         if( ! rooms[params.roomId]) {
             //create new room instance
-            var room = new Room(params.roomId, socket.id);
-            rooms[params.roomId] = (room);
+            rooms[params.roomId] = new Room(params.roomId, socket.id);
+
+            composerSocketIds[socket.id] = params.roomId;
 
             isComposer = true;
         } else {
@@ -69,7 +74,20 @@ io.on('connection', async (socket) => {
 
     socket.on('pressMidiKey', (data) => {
         socket.broadcast.to(data.roomId).emit('midiKeyPressed', data);
-    })
+    });
+
+    socket.on('disconnect', function () {
+        if(composerSocketIds[socket.id]) {
+            let currentRoomId = composerSocketIds[socket.id];
+            delete rooms[currentRoomId];
+            delete composerSocketIds[socket.id];
+            roomIds = roomIds.filter(id => id !== currentRoomId);
+
+            socket.broadcast.to(currentRoomId).emit('composerLeft');
+
+            delete io.sockets.adapter.rooms[currentRoomId];
+        }
+    });
 });
 
 server.listen(port, () => {
