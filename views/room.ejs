@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</head>
+<body>
+<h1>Open Web Piano</h1>
+<div class="content">
+    <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Welcome!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Please enjoy your stay and share this website if you find it fun :)</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="hearButtonUser">Let's go!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<span>Chrome requires a user click in order to hear the piano: <button class="btn-primary" id="hearButtonUser">Hear</button></span>-->
+    <div id="pianoHandle" style="display: none">
+        <br>
+        <button type="button" id="hearButtonComposer" class="btn btn-primary">Hear piano</button>
+        <br>
+        <label>Select MIDI input</label>
+        <select id="midiIn">
+            <option value="">No Devices Detected</option>
+            <option value="">Can't detect your MIDI device? Try restarting your browser.</option>
+        </select>
+        <br>
+        <label style="display: none;">Select MIDI output</label>
+        <select id="midiOut" style="display: none;">
+            <option value="">No Devices Detected</option>
+            <option value="">Can't detect your MIDI device? Try restarting your browser.</option>
+        </select>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/OpenWebPiano.js"></script>
+<script src="/js/main.js"></script>
+<script src="/midi.js"></script>
+
+</body>
+</html>

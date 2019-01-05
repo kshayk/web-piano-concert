@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>join | Chat app</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="/css/connect.css">
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+</head>
+<body class="centered-form">
+<div class="centered-form__form">
+    <form id="createRoom">
+        <div class="form-field">
+            <h3>Create a new room as a composer</h3>
+        </div>
+        <div class="form-field">
+            <button type="submit">Create</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    $("#createRoom").on('submit', (e) => {
+        e.preventDefault();
+
+        $.post( "/create-room", {})
+            .done(function( data ) {
+                window.location.href = `/room/${data}`;
+            });
+    });
+</script>
+</body>
+</html>
