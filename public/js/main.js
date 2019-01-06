@@ -1,6 +1,6 @@
-const MIDITYPEON = 'on';
-const MIDITYPEOFF = 'off';
-const MIDITYPESUSTAIN = 'sus';
+const MIDITYPEON = 1;
+const MIDITYPEOFF = 2;
+const MIDITYPESUSTAIN = 3;
 
 var roomId = window.location.pathname.split('/')[2];
 
@@ -46,15 +46,15 @@ socket.on('connect', function() {
 });
 
 socket.on('midiKeyPressed', (data) => {
-    switch (data.type) {
+    switch (data.t) {
         case MIDITYPEOFF:
-            openWebPiano.noteOff(data.noteNumber);
+            openWebPiano.noteOff(data.n);
             break;
         case MIDITYPEON:
-            openWebPiano.noteOn(data.noteNumber, data.velocity);
+            openWebPiano.noteOn(data.n, data.v);
             break;
         case MIDITYPESUSTAIN:
-            openWebPiano.sustain(data.velocity);
+            openWebPiano.sustain(data.v);
             break;
         default:
             console.log('Unrecognized event type, should not reach here');

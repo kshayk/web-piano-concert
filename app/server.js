@@ -73,7 +73,15 @@ io.on('connection', (socket) => {
     });
 
     socket.on('pressMidiKey', (data) => {
-        socket.broadcast.to(data.roomId).emit('midiKeyPressed', data);
+        //r - room id
+        //t - type
+        //n - note number
+        //v - velocity
+
+        let roomId = data.r;
+        delete data.r;
+
+        socket.broadcast.to(roomId).emit('midiKeyPressed', data);
     });
 
     socket.on('disconnect', function () {
