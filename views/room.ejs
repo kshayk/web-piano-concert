@@ -4,12 +4,16 @@
 	<title></title>
     <link rel="stylesheet" type="text/css" href="/css/main.css" />
 	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+    <link rel="stylesheet" type="text/css" href="/css/piano.css" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <script
             src="https://code.jquery.com/jquery-3.3.1.min.js"
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
             crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script>
+        var hearPiano = false;
+    </script>
 </head>
 <body>
 <h1>Open Web Piano</h1>
@@ -48,7 +52,65 @@
     </div>
 </div>
 
+<div id="p-wrapper">
+    <ul id="piano">
+        <li><div class="anchor" id="1w"></div></li>
+        <li><div class="anchor" id="2w"></div><span id="1b"></span></li>
+        <li><div class="anchor" id="3w"></div></li>
+        <li><div class="anchor" id="4w"></div><span id="3b"></span></li>
+        <li><div class="anchor" id="5w"></div><span id="4b"></span></li>
+        <li><div class="anchor" id="5w"></div></li>
+        <li><div class="anchor" id="7w"></div><span id="6b"></span></li>
+        <li><div class="anchor" id="8w"></div><span id="7b"></span></li>
+        <li><div class="anchor" id="9w"></div><span id="8b"></span></li>
+        <li><div class="anchor" id="10w"></div></li>
+        <li><div class="anchor" id="11w"></div><span id="10b"></span></li>
+        <li><div class="anchor" id="12w"></div><span id="11b"></span></li>
+        <li><div class="anchor" id="13w"></div></li>
+        <li><div class="anchor" id="14w"></div><span id="13b"></span></li>
+        <li><div class="anchor" id="15w"></div><span id="14b"></span></li>
+        <li><div class="anchor" id="16w"></div><span id="15b"></span></li>
+        <li><div class="anchor" id="17w"></div></li>
+        <li><div class="anchor" id="18w"></div><span id="17b"></span></li>
+        <li><div class="anchor" id="19w"></div><span id="18b"></span></li>
+        <li><div class="anchor" id="20w"></div></li>
+        <li><div class="anchor" id="21w"></div><span id="20b"></span></li>
+        <li><div class="anchor" id="22w"></div><span id="21b"></span></li>
+        <li><div class="anchor" id="23w"></div><span id="22b"></span></li>
+        <li><div class="anchor" id="24w"></div></li>
+        <li><div class="anchor" id="25w"></div><span id="24b"></span></li>
+        <li><div class="anchor" id="26w"></div><span id="25b"></span></li>
+        <li><div class="anchor" id="27w"></div></li>
+        <li><div class="anchor" id="28w"></div><span id="27b"></span></li>
+        <li><div class="anchor" id="29w"></div><span id="28b"></span></li>
+        <li><div class="anchor" id="30w"></div><span id="29b"></span></li>
+        <li><div class="anchor" id="31w"></div></li>
+        <li><div class="anchor" id="32w"></div><span id="31b"></span></li>
+        <li><div class="anchor" id="33w"></div><span id="32b"></span></li>
+        <li><div class="anchor" id="34w"></div></li>
+        <li><div class="anchor" id="35w"></div><span id="34b"></span></li>
+        <li><div class="anchor" id="36w"></div><span id="35b"></span></li>
+        <li><div class="anchor" id="37w"></div><span id="36b"></span></li>
+        <li><div class="anchor" id="38w"></div></li>
+        <li><div class="anchor" id="39w"></div><span id="38b"></span></li>
+        <li><div class="anchor" id="40w"></div><span id="39b"></span></li>
+        <li><div class="anchor" id="41w"></div></li>
+        <li><div class="anchor" id="42w"></div><span id="41b"></span></li>
+        <li><div class="anchor" id="43w"></div><span id="42b"></span></li>
+        <li><div class="anchor" id="44w"></div><span id="43b"></span></li>
+        <li><div class="anchor" id="45w"></div></li>
+        <li><div class="anchor" id="46w"></div><span id="45b"></span></li>
+        <li><div class="anchor" id="47w"></div><span id="46b"></span></li>
+        <li><div class="anchor" id="48w"></div></li>
+        <li><div class="anchor" id="49w"></div><span id="48b"></span></li>
+        <li><div class="anchor" id="50w"></div><span id="49b"></span></li>
+        <li><div class="anchor" id="51w"></div><span id="50b"></span></li>
+        <li><div class="anchor" id="52w"></div></li>
+    </ul>
+</div>
+
 <script src="/socket.io/socket.io.js"></script>
+<script src="/js/piano.js"></script>
 <script src="/OpenWebPiano.js"></script>
 <script src="/js/main.js"></script>
 <script src="/midi.js"></script>

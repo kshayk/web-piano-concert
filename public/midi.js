@@ -8,21 +8,23 @@ function midiMessageReceived( ev ) {
         return
     if ( cmd==8 || ((cmd==9)&&(velocity==0)) ) { // with MIDI, note on with velocity zero is the same as note off
         // note off
+        removePressedClass(noteNumber);
         socket.emit('pressMidiKey', {t: MIDITYPEOFF, n: `${noteNumber}`, r: roomId});
+
         if(hearPiano) {
             openWebPiano.noteOff(noteNumber);
         }
     } else if (cmd == 9) {
         // note on
-        //TODO: Send on command to socket
+        addPressedClass(noteNumber);
         socket.emit('pressMidiKey', {t: MIDITYPEON, n: `${noteNumber}`, v: velocity, r: roomId});
+
         if(hearPiano) {
             openWebPiano.noteOn(noteNumber, velocity);
         }
     } else if (cmd == 11) {
         //controller( noteNumber, velocity);
         if (noteNumber == 64) {
-            //TODO: Send sustain command to socket
             socket.emit('pressMidiKey', {t: MIDITYPESUSTAIN, v: velocity, r: roomId});
             if(hearPiano) {
                 openWebPiano.sustain(velocity);

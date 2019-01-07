@@ -103,50 +103,50 @@ var openWebPiano = (function(){
   }
 
   function noteOn(noteNumber, velocity) {
-    if((noteNumber<109)&&(noteNumber>20)) {
-      if (notes[noteNumber]) {
-        notes[noteNumber].gain.gain.setTargetAtTime(0.0, context.currentTime, 1.1);
-        notes[noteNumber].noteA.stop(context.currentTime + 2);
-        notes[noteNumber].noteB.stop(context.currentTime + 2);
-        notes[noteNumber].damp = null;
-        sustained.splice(sustained.indexOf(noteNumber), 1);
-      }
-      
-      var bufNumA = Math.floor((noteNumber - 21)/12);
-      var bufNumB = bufNumA + 1;
-      var noteNum = bufNumA * 12 + 21;
+      if((noteNumber<109)&&(noteNumber>20)) {
+          if (notes[noteNumber]) {
+              notes[noteNumber].gain.gain.setTargetAtTime(0.0, context.currentTime, 1.1);
+              notes[noteNumber].noteA.stop(context.currentTime + 2);
+              notes[noteNumber].noteB.stop(context.currentTime + 2);
+              notes[noteNumber].damp = null;
+              sustained.splice(sustained.indexOf(noteNumber), 1);
+          }
 
-      var freq = 2**((noteNumber-69)/12)*440;
-      let velo = velocity / 127;
-      let harmQuant = 20000/freq;
-      var filtFreq = freq * (2 - (noteNumber-21)/50) + freq * harmQuant * Math.pow(velo, 4);
+          var bufNumA = Math.floor((noteNumber - 21)/12);
+          var bufNumB = bufNumA + 1;
+          var noteNum = bufNumA * 12 + 21;
 
-      var gain_A = equalGain( 1 - ((noteNumber-21)%12) / 11 );
-      var rate_A = Math.pow(2, (noteNumber-noteNum)/12);
-      var rate_B = 0;
-      var gain_B = 0;
-      var gain_ = velo**1.4;
-      if (bufNumB<8) {
-        var rate_B = Math.pow(2, (noteNumber-(noteNum+12))/12);
-        var gain_B = 1 - gain_A;
+          var freq = 2**((noteNumber-69)/12)*440;
+          let velo = velocity / 127;
+          let harmQuant = 20000/freq;
+          var filtFreq = freq * (2 - (noteNumber-21)/50) + freq * harmQuant * Math.pow(velo, 4);
+
+          var gain_A = equalGain( 1 - ((noteNumber-21)%12) / 11 );
+          var rate_A = Math.pow(2, (noteNumber-noteNum)/12);
+          var rate_B = 0;
+          var gain_B = 0;
+          var gain_ = velo**1.4;
+          if (bufNumB<8) {
+              var rate_B = Math.pow(2, (noteNumber-(noteNum+12))/12);
+              var gain_B = 1 - gain_A;
+          }
+          notes[noteNumber] = new Note(noteNumber);
+          notes[noteNumber].on(bufNumA,bufNumB,rate_A,rate_B,filtFreq,gain_A,gain_B,gain_);
       }
-      notes[noteNumber] = new Note(noteNumber);
-      notes[noteNumber].on(bufNumA,bufNumB,rate_A,rate_B,filtFreq,gain_A,gain_B,gain_);  
-    }
   }
 
   function noteOff(noteNumber) {
-    if (!sus) {
-      if (noteNumber<90) {
-        notes[noteNumber].gain.gain.setTargetAtTime(0.0, context.currentTime + 0.03, 0.08);
-        notes[noteNumber].noteA.stop(context.currentTime + 2);
-        notes[noteNumber].noteB.stop(context.currentTime + 2);
-        notes[noteNumber].damp.start(0);
-      } 
-      delete notes[noteNumber];
-    } else {
-      sustained.push(noteNumber);
-    }
+      if (!sus) {
+          if (noteNumber<90) {
+              notes[noteNumber].gain.gain.setTargetAtTime(0.0, context.currentTime + 0.03, 0.08);
+              notes[noteNumber].noteA.stop(context.currentTime + 2);
+              notes[noteNumber].noteB.stop(context.currentTime + 2);
+              notes[noteNumber].damp.start(0);
+          }
+          delete notes[noteNumber];
+      } else {
+          sustained.push(noteNumber);
+      }
   }
 
   function sustain(val) {

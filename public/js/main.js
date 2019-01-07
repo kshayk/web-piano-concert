@@ -11,8 +11,6 @@ $('.modal').modal({
 
 $(".modal").modal('show');
 
-var hearPiano = false;
-
 $("#hearButtonComposer").on('click', () => {
     hearPiano = (hearPiano === false);
 
