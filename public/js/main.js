@@ -2,14 +2,18 @@ const MIDITYPEON = 1;
 const MIDITYPEOFF = 2;
 const MIDITYPESUSTAIN = 3;
 
+var roomUrl = window.location.href;
+console.log(roomUrl);
+$("#roomUrl").val(roomUrl);
+
 var roomId = window.location.pathname.split('/')[2];
 
-$('.modal').modal({
+$('.welcome-modal').modal({
     backdrop: 'static',
     keyboard: false
 });
 
-$(".modal").modal('show');
+$(".welcome-modal").modal('show');
 
 $("#hearButtonComposer").on('click', () => {
     hearPiano = (hearPiano === false);
@@ -27,7 +31,15 @@ var audioCtx = new AudioContext();
 
 $("#hearButtonUser").on('click', () => {
     audioCtx.resume();
-    $(".modal").modal('hide');
+    $(".welcome-modal").modal('hide');
+});
+
+$("#inviteButton").on('click', () => {
+    $(".invite-modal").modal('show');
+});
+
+$("#closeInviteModal").click(() => {
+    $(".invite-modal").modal('hide');
 });
 
 openWebPiano.init(audioCtx);

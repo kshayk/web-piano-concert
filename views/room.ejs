@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>PIAN.IO - PLAY</title>
     <link rel="stylesheet" type="text/css" href="/css/main.css" />
 	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
     <link rel="stylesheet" type="text/css" href="/css/piano.css" />
@@ -16,9 +16,9 @@
     </script>
 </head>
 <body>
-<h1>Open Web Piano</h1>
-<div class="content">
-    <div class="modal" tabindex="-1" role="dialog">
+<h1>pian.io</h1>
+<div class="content text-center">
+    <div class="modal welcome-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -33,11 +33,31 @@
             </div>
         </div>
     </div>
+
+
+    <!--Invite modal-->
+    <div class="modal invite-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Invite Listeners</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Send the URL below to your friends so they can listen to you:</p>
+                    <p><input id="roomUrl" type="text" class="form-control"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="closeInviteModal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!--<span>Chrome requires a user click in order to hear the piano: <button class="btn-primary" id="hearButtonUser">Hear</button></span>-->
     <div id="pianoHandle" style="display: none">
         <br>
         <button type="button" id="hearButtonComposer" class="btn btn-primary">Hear piano</button>
-        <br>
+        <button type="button" id="inviteButton" class="btn btn-warning">Invite Listeners</button>
+        <br><br>
         <label>Select MIDI input</label>
         <select id="midiIn">
             <option value="">No Devices Detected</option>
