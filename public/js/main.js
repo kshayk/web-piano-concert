@@ -53,6 +53,12 @@ socket.on('connect', function() {
             $("#pianoHandle").show();
         }
     });
+
+    setTimeout(() => {
+        socket.emit('requestListenerAmount', {roomId}, (listenersAmount) => {
+            $("#listeners").text(listenersAmount);
+        });
+    }, 2000)
 });
 
 socket.on('midiKeyPressed', (data) => {
@@ -76,4 +82,8 @@ socket.on('composerLeft', () => {
     alert('Composer left the room, so it will now be closed.');
 
     window.location.href = '/';
+});
+
+socket.on('updateListeners', (listeners) => {
+    $("#listeners").text(listeners);
 });

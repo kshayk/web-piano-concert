@@ -9,6 +9,7 @@ const {Room} = require('./lib/room');
 var roomIds = [];
 var composerSocketIds = {};
 var rooms = {};
+var listeners = {};
 
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
@@ -66,6 +67,9 @@ io.on('connection', (socket) => {
         } else {
             //add user to correct room.
             rooms[params.roomId].addUser(socket.id);
+            listeners[socket.id] = params.roomId;
+
+            io.to(params.roomId).emit('updateListeners', fetchListeners(params.roomId));
         }
 
         // io.to(params.roomId).emit('updateUserCount', users.getUserCount(params.room));
@@ -94,9 +98,34 @@ io.on('connection', (socket) => {
             socket.broadcast.to(currentRoomId).emit('composerLeft');
 
             delete io.sockets.adapter.rooms[currentRoomId];
+        } else {
+            if(listeners[socket.id]) {
+                let roomId = listeners[socket.id];
+                delete listeners[socket.id];
+
+                io.to(roomId).emit('updateListeners', fetchListeners(roomId));
+            }
         }
     });
+
+    socket.on('requestListenerAmount', (data, callback) => {
+        let roomId = data.roomId;
+
+        callback(fetchListeners(roomId));
+    });
 });
+
+function fetchListeners(roomId) {
+    let count = 0, key;
+
+    for(key in listeners) {
+        if(listeners[key] && listeners[key] === roomId) {
+            count++;
+        }
+    }
+
+    return count
+}
 
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
