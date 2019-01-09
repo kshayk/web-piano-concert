@@ -4,30 +4,34 @@ function midiMessageReceived( ev ) {
     let noteNumber = ev.data[1];
     let velocity = ev.data[2];
 
-    if (channel == 9)
-        return
-    if ( cmd==8 || ((cmd==9)&&(velocity==0)) ) { // with MIDI, note on with velocity zero is the same as note off
-        // note off
-        removePressedClass(noteNumber);
-        socket.emit('pressMidiKey', {t: MIDITYPEOFF, n: `${noteNumber}`, r: roomId});
+    //make sure you emit and make sound only if the composer is using a keyboard.
+    if(isComposer) {
+        if (channel == 9)
+            return
+        if (cmd == 8 || ((cmd == 9) && (velocity == 0))) { // with MIDI, note on with velocity zero is the same as note off
+            // note off
+            removePressedClass(noteNumber);
 
-        if(hearPiano) {
-            openWebPiano.noteOff(noteNumber);
-        }
-    } else if (cmd == 9) {
-        // note on
-        addPressedClass(noteNumber);
-        socket.emit('pressMidiKey', {t: MIDITYPEON, n: `${noteNumber}`, v: velocity, r: roomId});
+            socket.emit('pressMidiKey', {t: MIDITYPEOFF, n: `${noteNumber}`, r: roomId});
 
-        if(hearPiano) {
-            openWebPiano.noteOn(noteNumber, velocity);
-        }
-    } else if (cmd == 11) {
-        //controller( noteNumber, velocity);
-        if (noteNumber == 64) {
-            socket.emit('pressMidiKey', {t: MIDITYPESUSTAIN, v: velocity, r: roomId});
-            if(hearPiano) {
-                openWebPiano.sustain(velocity);
+            if (hearPiano) {
+                openWebPiano.noteOff(noteNumber);
+            }
+        } else if (cmd == 9) {
+            // note on
+            addPressedClass(noteNumber);
+            socket.emit('pressMidiKey', {t: MIDITYPEON, n: `${noteNumber}`, v: velocity, r: roomId});
+
+            if (hearPiano && isComposer) {
+                openWebPiano.noteOn(noteNumber, velocity);
+            }
+        } else if (cmd == 11) {
+            //controller( noteNumber, velocity);
+            if (noteNumber == 64) {
+                socket.emit('pressMidiKey', {t: MIDITYPESUSTAIN, v: velocity, r: roomId});
+                if (hearPiano && isComposer) {
+                    openWebPiano.sustain(velocity);
+                }
             }
         }
     }

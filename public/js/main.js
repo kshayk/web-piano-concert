@@ -8,6 +8,8 @@ $("#roomUrl").val(roomUrl);
 
 var roomId = window.location.pathname.split('/')[2];
 
+var isComposer = false;
+
 $('.welcome-modal').modal({
     backdrop: 'static',
     keyboard: false
@@ -47,8 +49,10 @@ openWebPiano.init(audioCtx);
 let socket = io();
 
 socket.on('connect', function() {
-    socket.emit('join', {roomId}, function(isComposer) {
-        if(isComposer) {
+    socket.emit('join', {roomId}, function(checkComposer) {
+        isComposer = checkComposer;
+
+        if(checkComposer) {
             //Show piano
             $("#pianoHandle").show();
         }
@@ -64,9 +68,11 @@ socket.on('connect', function() {
 socket.on('midiKeyPressed', (data) => {
     switch (data.t) {
         case MIDITYPEOFF:
+            removePressedClass(data.n);
             openWebPiano.noteOff(data.n);
             break;
         case MIDITYPEON:
+            addPressedClass(data.n);
             openWebPiano.noteOn(data.n, data.v);
             break;
         case MIDITYPESUSTAIN:
